@@ -1,0 +1,27 @@
+Frame:
+    id:root
+    Label:
+        text: Hola mundo
+        fill: X
+        expand: True
+    Button:
+        text: Soy un botón
+        fill: Y
+        expand: True
+    Frame:
+        fill:X
+        expand:True
+        Label:
+            text: Hola mundo
+            fill: X
+            expand: True
+        Button:
+            text: Soy un botón
+            fill: Y
+            expand: True
+    Label:
+        text: Adios mundo
+        fill: BOTH
+        expand: True
+        
+        
