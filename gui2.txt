@@ -1,25 +1,32 @@
-Frame: 
+Frame:
+    id:root
     Label:
+        id: label1
         text: Soy el label 1
         fill: X
         expand: True
     Button:
+        id:button2
         text: Soy el boton 1
         fill: Y
         expand: True
     Frame:
+        id:frame3
         fill:X
         #This line should be ignored
         expand:True
         Label:
+            id:label4
             text: Soy el label dentro del frame
             fill: X
             expand: True
         Button:
+            id:button3
             text: Soy el boton dentro del frame
             fill: Y
             expand: True
     Label:
+        id:lbl6
         text: Soy el ultimo label
         fill: BOTH
         expand: True
