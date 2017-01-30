@@ -16,10 +16,14 @@ POSSIBLE_CONTROLS=["Label", "Frame", "Button"]
 
 class TkControl(object):
     def __init__(self, line):
-        type=line[:-1].strip()
-        self.control_type=type
+        l=line[:-1].strip()
+        self.control_type=l
         self.properties=[]
         self.children=[]
+        self.parent=None
+        
+    def set_parent(self, parent):
+        self.parent=parent
         
     def add_property (self, line):
         line=line
@@ -31,13 +35,37 @@ class TkControl(object):
     def add_child(self, node):
         self.children.append( node )
         
+        
+    def get_property_value(self, property_key):
+        for tup in self.properties:
+            (key, value) = (tup[0], tup[1])
+            if key==property_key:
+                return value
+        return None
+    
+    def get_id(self):
+        return self.get_property_value("id")
+    
+    def get_pack(self):
+        pack_properties=[]
+        fill_value=self.get_property_value("fill")
+        if fill_value!=None:
+            pack_properties.append("fill="+fill_value)
+        expand_value=self.get_property_value("expand")
+        if expand_value!=None:
+            pack_properties.append("expand="+expand_value)
+        
+        return ",".join ( pack_properties )
+            
     def generate_code(self):
         EOL="\n"
         code=""
-        code+=self.control_type + EOL
-        for tuple in self.properties:
-            code+=tuple[0]+":"+tuple[1] + EOL
+        parent_id=self.parent
+        code+="        "+self.get_id()+"="+self.control_type +"("+parent_id+")"+ EOL
+        code+="        "+self.get_id()+".pack(" + self.get_pack()  + ")" + EOL
+        
         for child in self.children:
+            child.set_parent(self.get_id())
             code +=child.generate_code()
         return code
     
@@ -87,7 +115,7 @@ def get_line_type(line):
     return None
     
 def parse(filename):
-    print ("Parsing "+filename+"...")
+    #print ("Parsing "+filename+"...")
     lines=[]
     with open(filename, "r", encoding="utf-8") as fd:
         lines=fd.readlines()
@@ -107,6 +135,15 @@ def parse(filename):
             return
     build_ui(lines)
     
+  
+def get_template_file():
+    EOL="\n"
+    text=""
+    with open("template.py", "r") as fd:
+        lines=fd.readlines()
+        text ="".join ( lines )
+    return text
+
     
 def build_ui(lines):
     stack_level=0
@@ -121,10 +158,10 @@ def build_ui(lines):
         line_type=get_line_type(l)
         
         
-        print ("\t"*ind_level, ind_level, current_indentation_level, line_type, l)
+        #print ("\t"*ind_level, ind_level, current_indentation_level, line_type, l)
         
         if line_type==CONTROL and ind_level==0:
-            print("Pushing:"+l)
+            #print("Pushing:"+l)
             current_node=TkControl(l)
             stack.append(current_node)
             continue
@@ -136,13 +173,13 @@ def build_ui(lines):
             new_node=TkControl(l)
             last_node.add_child(new_node)
             stack.append(new_node)
-            print("Pushing:"+l)
+            #print("Pushing:"+l)
             continue
         
         if line_type==PROPERTY and ind_level==current_indentation_level+1:
             last_node=stack[-1]
             last_node.add_property(l)
-            print ("Property-->"+l+" for "+str(last_node))
+            #print ("Property-->"+l+" for "+str(last_node))
             continue
         
         if line_type==CONTROL and ind_level==current_indentation_level:
@@ -151,23 +188,27 @@ def build_ui(lines):
             new_node=TkControl(l)
             last_node.add_child(new_node)
             stack.append(new_node)
-            print("Pushing:"+l)
+            #print("Pushing:"+l)
             continue
         
         if line_type==CONTROL and ind_level<current_indentation_level:
             dif =current_indentation_level-ind_level
-            curr=ind_level
+            current_indentation_level=ind_level
             for i in range(0, dif+1):
-                print("Unshifting in "+l+", "+str(dif))
+                #print("Unshifting in "+l+", "+str(dif))
                 stack.pop()
             last_node=stack[-1]
             new_node=TkControl(l)
             last_node.add_child(new_node)
             stack.append(new_node)
-            print("Pushing:"+l)
+            #print("Pushing:"+l)
             
             
-    print(stack[0].generate_code())
+    stack[0].set_parent("self.main_window")
+    code=stack[0].generate_code()
+    template=get_template_file()
+    
+    print (template.format(code))
 if __name__ == '__main__':
     try:
         parse(sys.argv[1])

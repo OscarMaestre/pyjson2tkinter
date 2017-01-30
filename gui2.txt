@@ -1,5 +1,7 @@
 Frame:
     id:root
+    fill:BOTH
+    expand:True
     Label:
         id: label1
         text: Soy el label 1
