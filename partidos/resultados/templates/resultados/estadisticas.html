@@ -3,6 +3,23 @@
 <html>
 <head>
     <title>Estadisticas</title>
+    <meta charset="utf-8">
+    <style>
+        .numero{
+            font-weight: bold;
+            
+        }
+        .celda-izq{
+            text-align: right;
+        }
+        .celda-der{
+            text-align: left;
+        }
+        .nombre-equipo{
+            font-size: xx-large;
+            background-color: rgb(220, 200, 200);
+        }
+    </style>
 </head>
 
 <body>
@@ -10,14 +27,195 @@
     {%for p in parejas_estadisticas%}
     <table border='1'>
         <tr>
-            <td>Local</td>
-            <td>Visitante</td>
+            <td class="celda-izq">Local</td>
+            <td class="celda-der">Visitante</td>
         </tr>
         <tr>
-            <td>{{p.0.equipo.nombre}}</td>
-            <td>{{p.1.equipo.nombre}}</td>
+            <td class="celda-izq nombre-equipo">{{p.0.equipo.nombre}}</td>
+            <td class="celda-der nombre-equipo">{{p.1.equipo.nombre}}</td>
         </tr>
+        <tr>
+            <td class="celda-izq">Victorias jugando como local
+            <span class='numero'>
+            {{p.0.victorias_local}}
+            </span>
+            </td>
+            <td  class="celda-der">
+                <span class='numero'>{{p.1.victorias_visitante}}
+                </span>    
+            Victorias jugando como visitante</td>
+        </tr>
+        <tr>
+            <td class="celda-izq">Empates jugando como local
+                <span class='numero'>
+                    {{p.0.empates_local}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.1.empates_visitante}}
+                </span>
+                Empates jugando como visitante</td>
+        </tr>
+        <tr>
+            <td class="celda-izq">Derrotas jugando como local
+                <span class='numero'>
+                    {{p.0.derrotas_local}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.1.derrotas_visitante}}
+                </span>
+                Derrotas jugando como visitante</td>
+        </tr>
+        
+        
+        
+        <tr>
+            <td class="celda-izq">Victorias totales
+                <span class='numero'>
+                    {{p.0.victorias_totales}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.1.victorias_totales}}
+                </span>
+                Victorias totales</td>
+        </tr>
+        
+        
+        <tr>
+            <td class="celda-izq">Empates totales
+                <span class='numero'>
+                    {{p.0.empates_totales}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.1.empates_totales}}
+                </span>
+                Empates totales</td>
+        </tr>
+        
+        <tr>
+            <td class="celda-izq">Derrotas totales
+                <span class='numero'>
+                    {{p.0.derrotas_totales}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.1.derrotas_totales}}
+                </span>
+                Derrotas totales</td>
+        </tr>
+        
+        
+        <tr>
+            <td class="celda-izq">Probabilidad victoria como local
+                <span class='numero'>
+                    {{p.2.0}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.3.0}}
+                </span>
+                Probabilidad victoria como visitante
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="celda-izq">Probabilidad empate como local
+                <span class='numero'>
+                    {{p.2.1}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.3.1}}
+                </span>
+                Probabilidad empate como visitante
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="celda-izq">Probabilidad derrota como local
+                <span class='numero'>
+                    {{p.2.2}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.3.2}}
+                </span>
+                Probabilidad derrota como visitante
+            </td>
+        </tr>
+        
+        
+        
+        
+        <tr>
+            <td class="celda-izq">Probabilidad victoria total
+                <span class='numero'>
+                    {{p.4.0}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.5.0}}
+                </span>
+                Probabilidad victoria total
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="celda-izq">Probabilidad empate total
+                <span class='numero'>
+                    {{p.4.1}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.5.1}}
+                </span>
+                Probabilidad empate total
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="celda-izq">Probabilidad derrota total
+                <span class='numero'>
+                    {{p.4.2}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.5.2}}
+                </span>
+                Probabilidad derrota total
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="celda-izq">Puntos victoria local
+                <span class='numero'>
+                    {{p.6}}
+                </span>
+            </td>
+            <td class="celda-der">
+                <span class='numero'>
+                    {{p.7}}
+                </span>
+                Puntos victoria visitante
+            </td>
+        </tr>
+        
     </table>
+    <br/>
     {%endfor%}
 </div>
 

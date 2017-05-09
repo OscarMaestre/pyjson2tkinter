@@ -3,6 +3,7 @@
 
 from utilidades.ficheros.GestorFicheros import GestorFicheros
 import bs4
+
 from utilidades.basedatos.Configurador import Configurador
 configurador=Configurador ("partidos")
 configurador.activar_configuracion ("partidos.settings")
