@@ -22,7 +22,7 @@ class PartidoPendiente(models.Model):
     visitante           =   models.ForeignKey(Equipo, related_name="equipovisitante")
     
 class Victorias(models.Model):
-    nombre  =   models.ForeignKey(Equipo)
+    equipo              =   models.ForeignKey(Equipo)
     victorias_local     =   models.IntegerField()
     empates_local       =   models.IntegerField()
     derrotas_local      =   models.IntegerField()
@@ -30,3 +30,8 @@ class Victorias(models.Model):
     victorias_visitante     =   models.IntegerField()
     empates_visitante       =   models.IntegerField()
     derrotas_visitante      =   models.IntegerField()
+    
+    victorias_totales     =   models.IntegerField()
+    empates_totales       =   models.IntegerField()
+    derrotas_totales      =   models.IntegerField()
+    

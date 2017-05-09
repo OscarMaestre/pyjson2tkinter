@@ -18,6 +18,11 @@ def generar_victorias_derrotas(equipos, resultados):
         victorias_visitante     =   0
         empates_visitante       =   0
         derrotas_visitante      =   0
+        
+        victorias_totales     =   0
+        empates_totales       =   0
+        derrotas_totales      =   0
+        
         for r in resultados:
             #print("-"+r.local.nombre+"-", "-"+e.nombre+"-")
             if r.local.nombre==e.nombre:
@@ -35,8 +40,17 @@ def generar_victorias_derrotas(equipos, resultados):
                 if r.goles_visitante<r.goles_local:
                     derrotas_visitante+=1
         #Fin del for
-        print (e, victorias_local, empates_local, derrotas_local,
-               victorias_visitante, empates_visitante, derrotas_visitante)
+        victorias_totales = victorias_local + victorias_visitante
+        empates_totales = empates_local + empates_visitante
+        derrotas_totales = derrotas_local + derrotas_visitante
+        estadistica=Victorias(
+            equipo=e,
+            victorias_local=victorias_local,
+            empates_local=empates_local,
+            derrotas_local=derrotas_local,
+            victorias_visitante=victorias_visitante,
+            empates_visitante=empates_visitante,
+            derrotas_visitante=derrotas_visitante)
                 
 if __name__ == '__main__':
     equipos     = Equipo.objects.all()
