@@ -6,7 +6,7 @@ import bs4
 from utilidades.basedatos.Configurador import Configurador
 configurador=Configurador ("partidos")
 configurador.activar_configuracion ("partidos.settings")
-from resultados.models import Equipo, Resultado
+from resultados.models import Equipo, Resultado, PartidoPendiente
 from django.db.transaction import atomic
 
 
@@ -56,11 +56,27 @@ def cargar_datos():
             equipo=Equipo(nombre=equipo)
             equipo.save()
     with atomic():
+        Resultado.objects.all().delete()
+        PartidoPendiente.objects.all().delete()
         for resultado in conjunto_resultados:
             print (resultado)
             equipo_1=Equipo.objects.get(pk=resultado[1])
-            equipo_2=Equipo.objects.get(pk=resultado[1])
-            resultado=
+            equipo_2=Equipo.objects.get(pk=resultado[2])
+            goles_local         =   resultado[3]
+            goles_visitante     =   resultado[4]
+            jornada             =   resultado[0]
+            if goles_local=="-" and goles_visitante=="-":
+                pendiente = PartidoPendiente(
+                    jornada=jornada,
+                    local=equipo_1, visitante=equipo_2  )
+                pendiente.save()
+            else:
+                resultado   = Resultado (
+                    jornada=jornada,
+                    local=equipo_1, visitante=equipo_2,
+                    goles_local = goles_local, goles_visitante=goles_visitante
+                )
+                resultado.save()
         
         
 if __name__ == '__main__':
