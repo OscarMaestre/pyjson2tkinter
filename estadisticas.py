@@ -6,10 +6,11 @@ from utilidades.basedatos.Configurador import Configurador
 configurador=Configurador ("partidos")
 configurador.activar_configuracion ("partidos.settings")
 from resultados.models import Equipo, Resultado, PartidoPendiente, Victorias
-
+from tabulate import tabulate
 
 
 def generar_victorias_derrotas(equipos, resultados):
+    Victorias.objects.all().delete()
     for e in equipos:
         victorias_local     =   0
         empates_local       =   0
@@ -48,13 +49,48 @@ def generar_victorias_derrotas(equipos, resultados):
             victorias_local=victorias_local,
             empates_local=empates_local,
             derrotas_local=derrotas_local,
+            
             victorias_visitante=victorias_visitante,
             empates_visitante=empates_visitante,
-            derrotas_visitante=derrotas_visitante)
+            derrotas_visitante=derrotas_visitante,
+            
+            victorias_totales=victorias_totales,
+            empates_totales=empates_totales,
+            derrotas_totales=derrotas_totales
+            
+            )
+        
+        estadistica.save()
+
+
+def mostrar_pendientes():
+    estadisticas=Victorias.objects.all()
+    lista=[]
+    cabeceras_estadisticas=["Equipo", "Vict tot", "Emp tot", "Derr tot",
+                            "Vict loc", "Emp loc", "Derr loc",
+                            ]
+    for e in estadisticas:
+        lista_resultado=[]
+        lista_resultado.append(e.equipo, )
+        lista_resultado.append(e.victorias_totales)
+        lista_resultado.append(e.empates_totales)
+        lista_resultado.append(e.derrotas_totales)
+        lista_resultado.append(e.victorias_local)
+        lista_resultado.append(e.empates_local)
+        lista_resultado.append(e.derrotas_local)
+        lista.append(lista_resultado)
+    cad=tabulate(lista, headers=cabeceras_estadisticas)
+    print(cad)
+    
+    partidos_pendientes=PartidoPendiente.objects.all()
+    for p in partidos_pendientes:
+        equipo_local=str(p.local)
+        equipo_visitante=str(p.visitante)
+        print("Analisis de "+equipo_local+"-"+equipo_visitante)
                 
 if __name__ == '__main__':
     equipos     = Equipo.objects.all()
     resultados  = Resultado.objects.all()
     with atomic():
         generar_victorias_derrotas(equipos, resultados)
-
+        mostrar_pendientes()

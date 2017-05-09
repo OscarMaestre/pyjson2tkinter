@@ -41,7 +41,7 @@ def procesar_ficheros(num):
 def cargar_datos():
     conjunto_equipos=set()
     conjunto_resultados=set()
-    for num in range(1, 36):
+    for num in range(1, 39):
         url=url_base.format(num)
         fichero=fichero_base.format(num)
         if not gf.existe_fichero(fichero):
