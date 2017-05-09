@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Estadisticas</title>
+</head>
+
+<body>
+<div id="resultados">
+    {%for p in parejas_estadisticas%}
+    <table border='1'>
+        <tr>
+            <td>Local</td>
+            <td>Visitante</td>
+        </tr>
+        <tr>
+            <td>{{p.0.equipo.nombre}}</td>
+            <td>{{p.1.equipo.nombre}}</td>
+        </tr>
+    </table>
+    {%endfor%}
+</div>
+
+
+</body>
+</html>

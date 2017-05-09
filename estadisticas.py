@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from django.db.transaction import atomic
+from django.template.loader import render_to_string
 
 from utilidades.basedatos.Configurador import Configurador
 configurador=Configurador ("partidos")
@@ -80,14 +81,21 @@ def mostrar_pendientes():
         lista_resultado.append(e.derrotas_local)
         lista.append(lista_resultado)
     cad=tabulate(lista, headers=cabeceras_estadisticas)
-    print(cad)
+    #print(cad)
     
     partidos_pendientes=PartidoPendiente.objects.all()
+    lista_estadisticas=[]
+    contexto={}
     for p in partidos_pendientes:
         equipo_local=str(p.local)
         equipo_visitante=str(p.visitante)
-        print("Analisis de "+equipo_local+"-"+equipo_visitante)
-                
+        estadisticas_1=Victorias.objects.get(pk=equipo_local)
+        estadisticas_2=Victorias.objects.get(pk=equipo_visitante)
+        tupla=(estadisticas_1, estadisticas_2)
+        lista_estadisticas.append ( tupla )
+    contexto["parejas_estadisticas"]=lista_estadisticas
+    cad=render_to_string("resultados/estadisticas.html", contexto, None)
+    print(cad)
 if __name__ == '__main__':
     equipos     = Equipo.objects.all()
     resultados  = Resultado.objects.all()
